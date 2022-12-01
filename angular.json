@@ -42,8 +42,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "7kb",
+                  "maximumError": "14kb"
                 }
               ],
               "fileReplacements": [
@@ -96,12 +96,35 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
-            "scripts": []
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "./node_modules"
+              ]
+            },
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.min.css",
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/popper.js/dist/umd/popper.min.js"
+            ]
+          }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "Project:build:production",
+            "firebaseProject": "maivtb-hn22-cpl-fe-02",
+            "firebaseHostingSite": "maivtb-hn22-cpl-fe-02"
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

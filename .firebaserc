@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "maivtb-hn22-cpl-fe-02": {
+      "hosting": {
+        "Project": [
+          "maivtb-hn22-cpl-fe-02"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "maivtb-hn22-cpl-fe-02"
+  }
+}
