@@ -1,0 +1,296 @@
+﻿@using Newtonsoft.Json;
+@using VanillaCakeStore.Services;
+@using VanillaCakeStoreWebAPI.DTO.Order;
+@{
+    var cart = Context.Session.GetString(Constants._cartKey);
+    var token = Context.Session.GetString(Constants._accessToken);
+    var isAdmin = Context.Session.GetString(Constants._isAdmin);
+    var accessToken = Context.Session.GetString(Constants._accessToken);
+    var refreshToken = Context.Session.GetString(Constants._refreshToken);
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>@ViewBag.Title </title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="~/Content/login/images/icons/books-icon.png" />
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="~/Content/assets/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/assets/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/assets/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/assets/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/assets/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/assets/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/assets/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="~/css/style.css" type="text/css">
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+    <script src="~/Content/assets/js/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+            @if (accessToken != null)
+        {
+            <script>
+                localStorage.setItem("access", '@accessToken');
+                localStorage.setItem("refreshToken", '@refreshToken');
+            </script>
+        }
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header__top__left">
+                            <ul>
+                                <li><i class="fa fa-envelope"></i> maivtbhe153254@fpt.edu.vn</li>
+                                <li>Miễn phí ship cho đơn hàng trên 400.000 Đ</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header__top__right">
+                            <div class="header__top__right__social">
+                                <a href="https://www.facebook.com/boconganh.001/"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                                <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (isAdmin != null && isAdmin.Equals("true"))
+            {
+            <div class="container">
+                <div class="row"> 
+                    <div class="col-lg-3">
+                        <div class="header__logo">
+                            <a asp-area="" asp-controller="Home" asp-action="Index"><img style="margin-left: -8px; width: 180px;" src="~/img/Logo.png" /></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <nav class="header__menu">
+                            <ul>
+                                <li class="active"><a href="/">Home</a></li>
+                                <li> <a asp-controller="" asp-action="">Cake</a></li>
+                                <li><a href="/News">News</a></li>
+                                <li><a href="/Contact/AddContact">Contact</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="header__cart">
+                            <ul>
+                                <li><a asp-controller="Cart" asp-action="CustomerCart"><i class="fa fa-shopping-bag"></i> <span id="cart_cout">@(cart != null ? JsonConvert.DeserializeObject<List<CartItemDTO>>(cart).Count : 0)</span></a></li>
+
+                                    <li>
+                                        <form id="form-id" asp-controller="Authentication" asp-action="Logout">
+                                            <input hidden value="@accessToken" id="token" name="token" />
+                                            <a style="text-decoration:underline;cursor:pointer;" onclick="document.getElementById('form-id').submit();"> SignOut </a>
+                                        </form>
+                                    </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="humberger__open">
+                    <i class="fa fa-bars"></i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="header__logo">
+                            <a asp-area="" asp-controller="Home" asp-action="Index"><img style="margin-left: -8px; width: 180px;" src="~/img/Logo.png" /></a>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <nav class="header__menu">
+                            <ul>
+                                <li class="active"><a href="/">Home</a></li>
+                                <li> <a asp-area="" asp-controller="" asp-action="">Cake</a></li>
+                                <li><a href="/News">News</a></li>
+                                <li><a href="/Contact/AddContact">Contact</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="header__cart">
+                            <ul>
+                                <li><a asp-controller="Cart" asp-action="CustomerCart"><i class="fa fa-shopping-bag"></i> <span id="cart_cout">@(cart != null ? JsonConvert.DeserializeObject<List<CartItemDTO>>(cart).Count : 0)</span></a></li>
+                                
+                                @if (token != null)
+                                {
+                                    <li><a asp-action="Info" asp-controller="Customer">Profile</a></li>
+                                    <li>
+                                        <form id="form-id" asp-controller="Authentication" asp-action="Logout">
+                                            <input hidden value="@accessToken" id="token" name="token" />
+                                            <a style="text-decoration:underline;cursor:pointer;" onclick="document.getElementById('form-id').submit();"> SignOut </a>
+                                        </form>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li><a asp-controller="Authentication" asp-action="Login">Log in</a></li>
+                                    <li><a asp-action="Register" asp-controller="Authentication">Register</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="humberger__open">
+                    <i class="fa fa-bars"></i>
+                </div>
+            </div>
+        }
+    </header>
+    <!-- Header Section End -->
+    <!-- Hero Section Begin -->
+    <main role="main" class="pb-3">
+
+        @RenderBody()
+
+    </main>
+
+    <!-- Hero Section End -->
+    <!-- Contact Section Begin -->
+    <hr />
+    <section class="contact spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 text-center">
+                    <div class="contact__widget">
+                        <span class="icon_phone"></span>
+                        <h4>Số điện thoại</h4>
+                        <p>0862791104</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 text-center">
+                    <div class="contact__widget">
+                        <span class="icon_pin_alt"></span>
+                        <h4>Địa chỉ</h4>
+                        <p>Hòa Lạc, Thạch Thất, Hà Nội</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 text-center">
+                    <div class="contact__widget">
+                        <span class="icon_clock_alt"></span>
+                        <h4>Giờ hoạt động</h4>
+                        <p>09:00 sáng đến 23:00 tối</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 text-center">
+                    <div class="contact__widget">
+                        <span class="icon_mail_alt"></span>
+                        <h4>Email</h4>
+                        <p>maivtbhe153254@fpt.edu.vn</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Contact Section End -->
+    <!-- Footer Section Begin -->
+    <footer class="footer spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__about__logo">
+                            <a href="./index.html"><img style="margin-left: -8px;width:180px;" src="~/img/Logo.png" alt=""></a>
+                        </div>
+                        <ul>
+                            <li>Địa chỉ: Hòa Lạc, Thạch Thất, Hà Nội</li>
+                            <li>Số điện thoại: +84 862791104</li>
+                            <li>Email: maivtbhe153254@fpt.edu.vn</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+                    <div class="footer__widget">
+                        <h6>Liên kết</h6>
+                        <ul>
+                            <li><a href="#">Về chúng tôi</a></li>
+                            <li><a href="#">Giới thiệu cửa hàng</a></li>
+                            <li><a href="#">Thông tin liên hệ</a></li>
+                            <li><a href="#">Chính sách đổi trả</a></li>
+                            <li><a href="#">Chính sách vận chuyển</a></li>
+                        </ul>
+                        <ul>
+                            <li><a href="#">Hướng dẫn mua hàng trực tuyến</a></li>
+                            <li><a href="#">Hướng dẫn thanh toán</a></li>
+                            <li><a href="#">Góp ý, khiếu nại</a></li>
+                            <li><a href="/Product/Index">New Cake</a></li>
+                            <li><a href="/Product/Index">Hot Cake</a></li>
+                            <li><a href="/News/index">News</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-12">
+                    <div class="footer__widget">
+                        @*@Html.Action("Partial_Subcrice", "Home")*@
+                        <div class="footer__widget__social">
+                            <a href="https://www.facebook.com/boconganh.001/"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="footer__copyright">
+                        <div class="footer__copyright__text">
+                            <p>
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                @*Copyright &copy;
+                                <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>*@
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            </p>
+                        </div>
+                        @*<div class="footer__copyright__payment"><img src="img/payment-item.png" alt=""></div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Js Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="~/Content/assets/js/jquery-3.3.1.min.js"></script>
+    <script src="~/Content/assets/js/bootstrap.min.js"></script>
+    <script src="~/Content/assets/js/jquery-ui.min.js"></script>
+    <script src="~/Content/assets/js/jquery.slicknav.js"></script>
+    <script src="~/Content/assets/js/mixitup.min.js"></script>
+    <script src="~/Content/assets/js/owl.carousel.min.js"></script>
+    <script src="~/Content/assets/js/main.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate-vsdoc.js"></script>
+    <script src="~/Scripts/jsShopping.js"></script>
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,58 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Admin Page";
+    var orderDetail = ViewData["orderDetail"] as VanillaCakeStoreWebAPI.DTO.Order.OrderDTO;
+}
+<div id="content">
+    <div id="content-left">
+        <ul>
+            <a asp-action="Dashboard" asp-controller="Admin">
+            <li>Dashboard</li></a>
+            <a asp-action="Order" asp-controller="Admin">
+            <li>Orders</li></a>
+            <a asp-action="Product" asp-controller="Admin">
+            <li>Products</li></a>
+        </ul>
+    </div>
+    <div id="content-right">
+        <div class="path-admin">ORDER DETAIL</b></div>
+        <div class="content-main">
+            <div id="content-main-dashboard">
+                <div>
+                    <div class="profile-order-title">
+                        <div class="profile-order-title-left">
+                            <div>OrderID: #@orderDetail.OrderId | Order creation date: @orderDetail.OrderDate</div>
+                        </div>
+                        <div class="profile-order-title-right">
+                            @if (orderDetail.RequiredDate == null)
+                            {
+                                <span style="color: red;">Order canceled</span>
+                            }
+                            else if (orderDetail.ShippedDate == null)
+                            {
+                                <span style="color: blue;">Pending | <a asp-action="CancelOrder" asp-route-id="@orderDetail.OrderId" asp-controller="Admin">Cancel</a></span>
+                            }
+                            else
+                            {
+                                <span style="color: green;">Completed</span>
+                            }
+                        </div>
+                    </div>
+                    @foreach (var od in orderDetail.OrderDetails)
+                    {
+                        <div class="profile-order-content" style="background-color: white;">
+                            <div class="profile-order-content-col1">
+                                <a asp-action="ProductDetail" asp-route-id="@od.ProductID" asp-controller="Home"><img src="~/images/cake-item3.jpg" width="100%" /></a>
+                            </div>
+                            <div class="profile-order-content-col2 m-4">@od.ProductName</div>
+                            <div class="profile-order-content-col3 m-4">Quantity: @od.Quantity</div>
+                            <div class="profile-order-content-col4 m-4">@od.UnitPrice $</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

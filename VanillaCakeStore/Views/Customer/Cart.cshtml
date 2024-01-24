@@ -1,0 +1,94 @@
+﻿@{
+    ViewData["Title"] = "Cart";
+    var cart = ViewData["cart"] as IEnumerable<VanillaCakeStoreWebAPI.DTO.Order.CartItemDTO>;
+    decimal totalPrice = 0;
+    var cusInfo = ViewData["customerInfo"] as VanillaCakeStoreWebAPI.DTO.Customer.CustomerDTO;
+    var error = ViewData["error"] as string;
+    var success = ViewData["success"] as string;
+}
+@model VanillaCakeStoreWebAPI.DTO.Customer.CustomerDTO
+
+<div id="content">
+    <div id="cart">
+        <div class="header__logo mx-5">
+            <h3>Your Cart</h3>
+        </div>
+        <div id="cart-content" class="mx-5">
+            @foreach (var item in cart)
+            {
+                totalPrice += (item.UnitPrice != null ? item.UnitPrice.Value : 0) * item.Quantity;
+
+                <div class="cart-item">
+                    <div class="cart-item-infor">
+                        <div class=" col-lg-3 cart-item-img">
+                            <img src="~/images/cake-item1.jpg" />
+                        </div>
+                        <div class="col-lg-3 cart-item-name">
+                            <a asp-action="ProductDetail" asp-controller="Home" asp-route-id="@item.ProductID">@item.ProductName</a>
+                            <div class="cart-item-function">
+                                <a asp-action="UpdateCartItemQuantity" asp-controller="Cart" asp-route-id="@item.ProductID" asp-route-quantity="@(item.Quantity - 1)">-</a>
+                                <a asp-action="UpdateCartItemQuantity" asp-controller="Cart" asp-route-id="@item.ProductID" asp-route-quantity="@(item.Quantity + 1)">+</a>
+                                <input type="text" value="@item.Quantity" disabled />
+                            </div>
+                        </div>
+                        <div class="col-lg-3 cart-item-price text-blue">
+                            
+                        </div>
+                        <div class=" col-lg-3 cart-item-button text-blue">
+                            Price: @item.UnitPrice $
+                            <a asp-action="RemoveCartItem" asp-controller="Cart" asp-route-id="@item.ProductID">Remove</a>
+                        </div>
+                    </div>
+                    
+                </div>
+            }
+        </div>
+        <div id="cart-summary">
+            <div id="cart-summary-content">Total amount: <span style="color:red">@totalPrice $</span></div>
+        </div>
+        <form asp-action="OrderCart" asp-controller="Cart">
+            <div id="customer-info">
+                <div id="customer-info" class="center">
+                    <h3>Ship Address:</h3>
+                    <div id="customer-info-detail">
+                        @if (cusInfo != null)
+                        {
+                            <div id="customer-info-left">
+                                <input asp-for="@cusInfo.CompanyName" disabled /><br />
+                                <input asp-for="@cusInfo.ContactName" disabled /><br />
+                            </div>
+                            <div id="customer-info-right">
+                                <input asp-for="@cusInfo.ContactTitle" disabled /><br />
+                                <input asp-for="@cusInfo.Address" disabled /><br />
+                            </div>
+                        }
+                        else
+                        {
+                            <div id="customer-info-left">
+                                <input asp-for="CompanyName" placeholder="Company name *" required /><br />
+                                <input asp-for="ContactName" placeholder="Contact name *" required /><br />
+                            </div>
+                            <div id="customer-info-right">
+                                <input asp-for="ContactTitle" placeholder="Contact title *" required /><br />
+                                <input asp-for="Address" placeholder="Address *" required /><br />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div id="cart-order">
+                @if (success != null)
+                {
+                    <div><span style="color:green"> @success </span></div>
+                }
+                @if (error != null)
+                {
+                    <div><span style="color:red"> @error </span></div>
+
+                }
+                <input class="mb-3" type="submit" value="ORDER" />
+                </br>
+            </div>
+        </form>
+    </div>
+</div>

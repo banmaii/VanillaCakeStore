@@ -1,0 +1,219 @@
+﻿@using VanillaCakeStore.Models.Category;
+@using VanillaCakeStore.Models.Home;
+@model HomeFilterView
+@{
+    ViewData["Title"] = "Home Page";
+    var categories = ViewData["categories"] as IEnumerable<CategoryView>;
+    var productsBestSale = ViewData["productsBestSale"] as VanillaCakeStoreWebAPI.DTO.Product.PagingProductDTO;
+    var productsHot = ViewData["productsHot"] as VanillaCakeStoreWebAPI.DTO.Product.PagingProductDTO;
+    var productsNew = ViewData["productsNew"] as VanillaCakeStoreWebAPI.DTO.Product.PagingProductDTO;
+    int categoryId = ViewData["categoryId"] != null ? Convert.ToInt32(ViewData["categoryId"]) : 1;
+    int pageHot = ViewData["pageHot"] != null ? Convert.ToInt32(ViewData["pageHot"]) : 1;
+    int pageSale = ViewData["pageSale"] != null ? Convert.ToInt32(ViewData["pageSale"]) : 1;
+    int pageNew = ViewData["pageNew"] != null ? Convert.ToInt32(ViewData["pageNew"]) : 1;
+}
+
+
+<!-- Hero Section Begin -->
+<section class="hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <i class="fa fa-bars"></i>
+                        <a asp-controller="Home" asp-action="Filter" asp-route-id="0">
+                            <span>All Categories</span>
+                        </a>
+                    </div>
+                    <ul>
+                        @foreach (var cate in categories)
+                        {
+                            <a asp-controller="Home" asp-action="Filter" asp-route-id="@cate.CategoryId">
+                            <li class="py-1">@cate.CategoryName</li></a>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="hero__item set-bg" data-setbg="/images/banner.jpg">
+                    <div class="hero__text">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="featured spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>Hot Cake</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row featured__filter">
+            @foreach (var pHot in productsHot.Values)
+            {
+            <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
+                <div class="featured__item">
+                    <div class="featured__item__pic set-bg" data-setbg="/images/cake-item1.jpg">
+                        <ul class="featured__item__pic__hover">
+                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="featured__item__text">
+                        <h6 class="name"><a asp-action="ProductDetail" asp-route-id="@pHot.ProductId" asp-controller="Home">@pHot.ProductName</a></h6>
+                        <h5 class="price">$@pHot.UnitPrice</h5>
+                    </div>
+                </div>
+            </div>
+            }
+            <div id="paging">
+                <div class="pagination">
+                    <a class="@(pageHot==1?"visually-hidden":"")"
+                       asp-action="Filter"
+                       asp-controller="Home"
+                       asp-route-id="@categoryId"
+                       asp-route-pageHot="@(pageHot-1)"
+                       asp-route-pageSale="@pageSale"
+                       asp-route-pageNew="@pageNew">&laquo;</a>
+                    @for (int i = 1; i <= productsHot.TotalPages; i++)
+                    {
+                        <a asp-action="Filter"
+                       asp-controller="Home"
+                       asp-route-id="@categoryId"
+                       asp-route-pageHot="@i"
+                       asp-route-pageSale="@pageSale"
+                       asp-route-pageNew="@pageNew"
+                       class="@(i==pageHot?"active":"")">@i</a>
+                    }
+                    <a class="@(pageHot==productsHot.TotalPages?"visually-hidden":"")"
+                       asp-action="Filter"
+                       asp-controller="Home"
+                       asp-route-id="@categoryId"
+                       asp-route-pageHot="@(pageHot+1)"
+                       asp-route-pageSale="@pageSale"
+                       asp-route-pageNew="@pageNew">&raquo;</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>Best Sales</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row featured__filter">
+            @foreach (var pSale in productsBestSale.Values)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="/images/cake-item2.jpg">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6 class="name"><a asp-action="ProductDetail" asp-route-id="@pSale.ProductId" asp-controller="Home">@pSale.ProductName</a></h6>
+                            <h5 class="price">$@pSale.UnitPrice</h5>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div id="paging">
+                <div class="pagination">
+                    <a class="@(pageSale==1?"visually-hidden":"")"
+                       asp-action="Filter"
+                       asp-controller="Home"
+                       asp-route-id="@categoryId"
+                       asp-route-pageSale="@(pageSale-1)"
+                       asp-route-pageHot="@pageHot"
+                       asp-route-pageNew="@pageNew">&laquo;</a>
+                    @for (int i = 1; i <= productsBestSale.TotalPages; i++)
+                    {
+                        <a asp-action="Filter"
+                       asp-controller="Home"
+                       asp-route-id="@categoryId"
+                       asp-route-pageSale="@i"
+                       asp-route-pageHot="@pageHot"
+                       asp-route-pageNew="@pageNew"
+                       class="@(i==pageSale?"active":"")">@i</a>
+                    }
+                    <a class="@(pageSale==productsBestSale.TotalPages?"visually-hidden":"")"
+                       asp-action="Filter"
+                       asp-controller="Home"
+                       asp-route-id="@categoryId"
+                       asp-route-pageSale="@(pageSale+1)"
+                       asp-route-pageHot="@pageHot"
+                       asp-route-pageNew="@pageNew">&raquo;</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>New Cake</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row featured__filter">
+            @foreach (var pNew in productsNew.Values)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="/images/cake-item3.jpg">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6 class="name"><a asp-action="ProductDetail" asp-route-id="@pNew.ProductId" asp-controller="Home">@pNew.ProductName</a></h6>
+                            <h5 class="price">$@pNew.UnitPrice</h5>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div id="paging">
+                <div class="pagination">
+                    <a class="@(pageNew==1?"visually-hidden":"")"
+                       asp-action="Filter"
+                       asp-controller="Home"
+                       asp-route-id="@categoryId"
+                       asp-route-pageSale="@pageSale"
+                       asp-route-pageHot="@pageHot"
+                       asp-route-pageNew="@(pageNew-1)">&laquo;</a>
+                    @for (int i = 1; i <= productsNew.TotalPages; i++)
+                    {
+                        <a asp-action="Filter"
+                       asp-controller="Home"
+                       asp-route-id="@categoryId"
+                       asp-route-pageSale="@pageSale"
+                       asp-route-pageHot="@pageHot"
+                       asp-route-pageNew="@i"
+                       class="@(i==pageNew?"active":"")">@i</a>
+                    }
+                    <a class="@(pageNew==productsNew.TotalPages?"visually-hidden":"")"
+                       asp-action="Filter"
+                       asp-controller="Home"
+                       asp-route-id="@categoryId"
+                       asp-route-pageSale="@pageSale"
+                       asp-route-pageHot="@pageHot"
+                       asp-route-pageNew="@(pageNew+1)">&raquo;</a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</section>

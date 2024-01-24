@@ -1,0 +1,52 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Register";
+}
+@model VanillaCakeStoreWebAPI.DTO.Authentication.RegisterDTO
+
+<div id="content">
+    <div id="form">
+        <div id="form-title">
+            <span><a asp-action="Register" asp-controller="
+" style="color: red;">Register</a>
+            </span>
+            <span><a asp-action="Login" asp-controller="Authentication">Login</a></span>
+        </div>
+        <div id="form-content">
+            <form asp-action="RegistAccount" asp-controller="Authentication">
+                <label>Company name<span style="color: red;">*</span></label><br />
+                <input asp-for="CompanyName" class="form-control" />
+                <span asp-validation-for="CompanyName" class="text-danger"></span>
+
+                <label>Contact name<span style="color: red;">*</span></label><br />
+                <input asp-for="ContactName" class="form-control" />
+                <span asp-validation-for="ContactName" class="text-danger"></span>
+
+                <label>Contact title<span style="color: red;">*</span></label><br />
+                <input asp-for="ContactTitle" class="form-control" />
+                <span asp-validation-for="ContactTitle" class="text-danger"></span>
+
+                <label>Address<span style="color: red;">*</span></label><br />
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+
+                <label>Email<span style="color: red;">*</span></label><br />
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+
+                <label>Password<span style="color: red;">*</span></label><br />
+                <input type="password" asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+
+                <label>Re-Password<span style="color: red;">*</span></label><br />
+                <input type="password" asp-for="RePassword" class="form-control" />
+                <span asp-validation-for="RePassword" class="text-danger"></span>
+
+                <div></div>
+                <input type="submit" value="SIGN UP" style="margin-bottom: 30px;" />
+            </form>
+        </div>
+    </div>
+</div>

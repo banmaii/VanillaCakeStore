@@ -1,0 +1,23 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Admin Page";
+
+}
+
+<div id="content">
+    <div id="content-left">
+        <ul>
+            <a asp-action="Dashboard" asp-controller="Admin">
+            <li>Dashboard</li></a>
+            <a asp-action="Order" asp-controller="Admin">
+            <li>Orders</li></a>
+            <a asp-action="Product" asp-controller="Admin">
+            <li>Products</li></a>
+        </ul>
+    </div>
+    <div id="content-right">
+        <h3><span style="color:red;">@ViewData["error"]</span></h3>
+    </div>
+</div>

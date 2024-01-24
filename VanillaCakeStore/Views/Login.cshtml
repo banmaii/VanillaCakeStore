@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    var error = ViewData["error"] as string;
+}
+<script>
+    localStorage.removeItem("access");
+    localStorage.removeItem("refreshToken");
+</script>
+@model VanillaCakeStoreWebAPI.DTO.Authentication.LoginDTO
+
+<div id="content">
+    <div id="form">
+        <div id="form-title">
+            <span><a asp-action="Register" asp-controller="Authentication">Register</a></span>
+            <span><a asp-action="Login" asp-controller="Authentication" style="color: red;">Login</a></span>
+        </div>
+        <div id="form-content" class="justify-content-center">
+
+            <form asp-controller="Authentication" asp-action="LoginAccount">
+
+                <label>Email<span style="color: red;">*</span></label><br />
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+                <br />
+                <label>Password<span style="color: red;">*</span></label><br />
+                <input type="password" asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+                <br />
+                @if (error != null)
+                {
+                    <div><span style="color: red;">@error</span></div>
+                }
+                <div><a asp-action="ForgotPassword" asp-controller="Authentication">Forgot password?</a></div>
+                <input class="btn btn-primary" type="submit" value="Login In" /><br />
+            </form>
+        </div>
+    </div>
+</div>
